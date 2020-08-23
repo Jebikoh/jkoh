@@ -1,12 +1,17 @@
 {
-  "name": "skeletron",
+  "name": "jkoh_bot",
   "author": "Jebikoh",
   "version": "1.0.0",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "@types/ws": "^7.2.5",
     "discord.js": "^12.2.0",
+    "ffmpeg": "^0.0.4",
+    "ffmpeg-static": "^4.2.7",
     "gts": "^2.0.2",
-    "ts-node": "^8.10.2"
+    "ts-node": "^8.10.2",
+    "ytdl-core": "^3.2.2",
+    "ytdl-core-discord": "^1.2.1"
   },
   "devDependencies": {
     "@types/node": "^13.11.1",

@@ -51,18 +51,7 @@ module.exports = {
     }
 
     if (!args.length) {
-      return message.author
-        .send(embedInitial)
-        .then(() => {
-          if (message.channel.type === 'dm') return;
-          message.reply("Help is in your DM's!");
-        })
-        .catch(error => {
-          console.error(error);
-          message.reply(
-            "I can't seem like I can't DM you! Do you have DMs disabled?"
-          );
-        });
+      return message.channel.send(embedInitial);
     }
 
     const name = args[0].toLowerCase();

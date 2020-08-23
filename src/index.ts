@@ -4,6 +4,13 @@ import {deleteMessage} from './utils';
 import Command from './Command';
 import SkeletronClient from './SkeletronClient';
 
+export const servers: {
+  [guildId: string]: {
+    queue: {url: string; title: string; thumbnailURL: string; length: number}[];
+    dispatcher?: Discord.StreamDispatcher;
+  };
+} = {};
+
 const client = new SkeletronClient({});
 
 const cooldowns: Discord.Collection<
@@ -48,10 +55,18 @@ client.on('message', message => {
       else return false;
     })) as Command;
 
-  if (command === null) return;
+  if (command === null || typeof command === 'undefined') return;
 
-  if (command.guildOnly && message.channel.type !== 'text') {
+  if (command.guildOnly && !message.member) {
     return message.reply('Sorry, you can only use that command on servers!');
+  }
+
+  if (
+    command.guildOnly &&
+    message.member &&
+    !servers[message.member.guild.id]
+  ) {
+    servers[message.member.guild.id] = {queue: []};
   }
 
   if (

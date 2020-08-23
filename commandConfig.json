@@ -2,5 +2,9 @@
     "basic": {
         "prefix": "b",
         "group": "Basic"
+    },
+    "voice": {
+        "prefix": "v",
+        "group": "Voice"
     }
 }
