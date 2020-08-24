@@ -3,7 +3,7 @@ import {servers} from '../..';
 
 module.exports = {
   name: 'current',
-  description: 'Displays the current song',
+  description: 'Displays the current song.',
   aliases: ['cs'],
   usage: 'v?current',
   guildOnly: true,
@@ -12,7 +12,7 @@ module.exports = {
   execute(message: Message) {
     const server = servers[message.guild!.id];
     if (server.queue.length === 0) {
-      message.channel.send('Nothing is playing right now!');
+      message.reply('nothing is playing right now!');
     } else {
       const isPaused =
         server.dispatcher!.paused === true ? 'Paused' : 'Playing';
@@ -31,6 +31,7 @@ module.exports = {
         .setURL(server.queue[0].url)
         .setThumbnail(server.queue[0].thumbnailURL)
         .addField('Status', isPaused, true)
+        .setColor('#ad3e91')
         .addField('Time Remaining', minutes + ':' + seconds, true);
 
       message.channel.send(embed);

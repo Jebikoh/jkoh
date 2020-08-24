@@ -24,9 +24,10 @@ async function play(connection: VoiceConnection, guild: Guild) {
 
 module.exports = {
   name: 'play',
-  description: 'Joins your channel and plays music!',
+  description:
+    'Joins your channel and plays music! Optionally provide a queue position.',
   aliases: ['p'],
-  usage: 'v?play [URL]',
+  usage: 'v?play {URL} {?Position}',
   guildOnly: true,
   adminRequired: false,
   argsRequired: true,
@@ -37,61 +38,74 @@ module.exports = {
           servers[message.guild!.id] = {queue: []};
         }
 
-        message.channel.send('🔎 searching for `' + args[0] + '`...');
-
         const server = servers[message.guild!.id];
 
-        getInfo(args[0])
-          .then(info => {
-            const thumbnails =
-              info.player_response.videoDetails.thumbnail.thumbnails;
-            const thumbnailURL = thumbnails[thumbnails.length - 1].url;
-            const minutes: number = Math.trunc(
-              +info.player_response.videoDetails.lengthSeconds / 60
-            );
-            const seconds: number =
-              +info.player_response.videoDetails.lengthSeconds % 60;
+        if (
+          args.length > 1 &&
+          server.queue.length > 0 &&
+          (+args[1] < 1 || +args[1] > server.queue.length)
+        ) {
+          message.reply(
+            "Sorry, it seems you didn't provide a valid queue position!"
+          );
+        } else {
+          message.channel.send('🔎 searching for `' + args[0] + '`...');
 
-            const embed = new MessageEmbed()
-              .setTitle(info.player_response.videoDetails.title)
-              .setAuthor(
-                info.player_response.videoDetails.author,
-                info.author.avatar
-              )
-              .setThumbnail(thumbnailURL)
-              .setURL(args[0])
-              .setColor('#ff0000')
-              .addField('Length', minutes + ':' + seconds, true)
-              .addField(
-                'Viewcount',
-                info.player_response.videoDetails.viewCount
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                true
+          getInfo(args[0])
+            .then(info => {
+              const thumbnails =
+                info.player_response.videoDetails.thumbnail.thumbnails;
+              const thumbnailURL = thumbnails[thumbnails.length - 1].url;
+              const minutes: number = Math.trunc(
+                +info.player_response.videoDetails.lengthSeconds / 60
               );
+              const seconds: number =
+                +info.player_response.videoDetails.lengthSeconds % 60;
 
-            if (server.queue.length === 0) {
-              embed.addField('Position in Queue', 'Playing!');
-            } else {
-              embed.addField('Position in Queue', server.queue.length, true);
-            }
+              const embed = new MessageEmbed()
+                .setTitle(info.player_response.videoDetails.title)
+                .setAuthor(
+                  info.player_response.videoDetails.author,
+                  info.author.avatar
+                )
+                .setThumbnail(thumbnailURL)
+                .setURL(args[0])
+                .setColor('#ff0000')
+                .addField('Length', minutes + ':' + seconds, true)
+                .addField(
+                  'Viewcount',
+                  info.player_response.videoDetails.viewCount
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                  true
+                );
 
-            message.channel.send(embed);
+              const queuePosition =
+                args.length > 1 ? +args[1] : server.queue.length;
 
-            server.queue.push({
-              url: args[0],
-              title: info.player_response.videoDetails.title,
-              thumbnailURL: thumbnailURL,
-              length: info.player_response.videoDetails.lengthSeconds,
-            });
-          })
-          .then(() => {
-            if (typeof server.dispatcher === 'undefined') {
-              message.member!.voice.channel!.join().then(connection => {
-                play(connection, message.guild!);
+              if (server.queue.length === 0) {
+                embed.addField('Position in Queue', 'Playing!');
+              } else {
+                embed.addField('Position in Queue', queuePosition, true);
+              }
+
+              message.channel.send(embed);
+
+              server.queue.splice(queuePosition, 0, {
+                url: args[0],
+                title: info.player_response.videoDetails.title,
+                thumbnailURL: thumbnailURL,
+                length: info.player_response.videoDetails.lengthSeconds,
               });
-            }
-          });
+            })
+            .then(() => {
+              if (typeof server.dispatcher === 'undefined') {
+                message.member!.voice.channel!.join().then(connection => {
+                  play(connection, message.guild!);
+                });
+              }
+            });
+        }
       } else {
         message.reply("you aren't in a voice channel!");
       }

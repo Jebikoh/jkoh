@@ -1,3 +1,4 @@
+// eslint-disable-next-line node/no-unpublished-import
 import {prefix} from '../../../config.json';
 import {commandCfg} from '../../SkeletronClient';
 import {Message, MessageEmbed} from 'discord.js';
@@ -7,7 +8,7 @@ module.exports = {
   name: 'help',
   description: 'Lists all commands, or specific info for a command',
   aliases: ['commands'],
-  usage: 'b?help {command}',
+  usage: 'b?help {?command}',
   cooldown: 0,
   guildOnly: false,
   adminReq: false,
@@ -21,7 +22,7 @@ module.exports = {
       .setDescription(
         `\nUse \`${commandCfg['basic'].prefix}${prefix}help [command name]\` to get info on a specific command.`
       )
-      .setColor(0x00ae86)
+      .setColor('#ad3e91')
       .setTimestamp();
 
     const commandFolders = fs.readdirSync('./src/commands/');
@@ -63,7 +64,7 @@ module.exports = {
 
     const embed = new MessageEmbed()
       .setTitle(`**${command.name}**`)
-      .setColor(0x00ae86)
+      .setColor('#ad3e91')
       .setTimestamp();
     if (command.aliases) embed.addField('**Aliases:**', command.aliases);
     if (command.description)

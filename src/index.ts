@@ -1,4 +1,5 @@
 import * as Discord from 'discord.js';
+// eslint-disable-next-line node/no-unpublished-import
 import {prefix, token, deleteTimer} from '../config.json';
 import {deleteMessage} from './utils';
 import Command from './Command';
@@ -81,7 +82,7 @@ client.on('message', message => {
     let reply = `You didn't provide the necessary arguments, ${message.author}!`;
 
     if (command.usage) {
-      reply += `\nThe proper usage would be: \`${commandType}${prefix}${command.name} ${command.usage}\``;
+      reply += `\nThe proper usage would be: \`${command.usage}\``;
     }
 
     return message.channel.send(reply);

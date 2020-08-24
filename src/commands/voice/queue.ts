@@ -3,7 +3,7 @@ import {servers} from '../..';
 
 module.exports = {
   name: 'queue',
-  description: 'Look at the current queue for your server',
+  description: 'Look at the current queue for your server.',
   aliases: ['q'],
   usage: 'v?queue',
   guildOnly: true,
@@ -12,7 +12,7 @@ module.exports = {
   execute(message: Message) {
     const server = servers[message.guild!.id];
     if (server.queue.length === 0) {
-      message.reply('The queue is empty!');
+      message.reply('the queue is empty!');
     } else {
       const queueEmbed = new MessageEmbed()
         .setTitle('Server Queue')

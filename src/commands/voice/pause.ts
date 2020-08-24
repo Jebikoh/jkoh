@@ -5,7 +5,7 @@ module.exports = {
   name: 'pause',
   description: 'Pauses currently playing song.',
   aliases: ['ps'],
-  usage: 'v?ping',
+  usage: 'v?pause',
   guildOnly: true,
   adminRequired: false,
   argsRequired: false,
@@ -15,7 +15,7 @@ module.exports = {
       message.reply("There's nothing playing!");
     } else {
       message.channel.send(
-        'Pausing :pause_button: : ' + '`' + server.queue[0].title + '`'
+        `Pausing :pause_button: : \`${server.queue[0].title}\``
       );
       server.dispatcher.pause();
     }

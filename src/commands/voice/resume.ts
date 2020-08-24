@@ -17,7 +17,7 @@ module.exports = {
       message.reply("the song isn't paused.");
     } else {
       message.channel.send(
-        'Resuming :arrow_forward: : ' + '`' + server.queue[0].title + '`'
+        `Resuming :arrow_forward: : \`${server.queue[0].title}\``
       );
       server.dispatcher.resume();
     }

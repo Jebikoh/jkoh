@@ -17,11 +17,11 @@ module.exports = {
       const channel = message.member!.voice.channel;
 
       if (channel === null) {
-        message.reply("You aren't in a voice channel!");
+        message.reply("you aren't in a voice channel!");
       } else {
         channel.leave();
-
-        message.channel.send('Stopped!');
+        server.dispatcher = undefined;
+        message.channel.send('Stopped! :no_entry:');
       }
     }
   },

@@ -10,6 +10,7 @@ module.exports = {
   adminRequired: false,
   argsRequired: false,
   execute(message: Message) {
+    message.channel.send(message.author.avatarURL({format: 'png', size: 128}));
     message.channel.send('Pong!').then(msg => {
       deleteMessage(msg);
     });

@@ -12,7 +12,7 @@ module.exports = {
   execute(message: Message) {
     const server = servers[message.guild!.id];
     if (server.queue.length === 0) {
-      message.channel.send('The queue is already empty!');
+      message.reply('the queue is already empty!');
     } else {
       server.queue = [server.queue[0]];
       message.channel.send('Queue cleared!');
