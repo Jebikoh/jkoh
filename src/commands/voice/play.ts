@@ -12,7 +12,9 @@ async function play(connection: VoiceConnection, guild: Guild) {
   });
 
   server.dispatcher.on('finish', () => {
-    server.queue.shift();
+    if (!server.loop) {
+      server.queue.shift();
+    }
     if (server.queue.length > 0) {
       play(connection, guild);
     } else {
@@ -34,10 +36,6 @@ module.exports = {
   execute(message: Message, args: string[]) {
     if (isValidUrl(args[0])) {
       if (message.member!.voice.channel) {
-        if (!servers[message.guild!.id]) {
-          servers[message.guild!.id] = {queue: []};
-        }
-
         const server = servers[message.guild!.id];
 
         if (

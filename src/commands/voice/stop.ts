@@ -21,6 +21,7 @@ module.exports = {
       } else {
         channel.leave();
         server.dispatcher = undefined;
+        server.loop = false;
         message.channel.send('Stopped! :no_entry:');
       }
     }

@@ -9,6 +9,7 @@ export const servers: {
   [guildId: string]: {
     queue: {url: string; title: string; thumbnailURL: string; length: number}[];
     dispatcher?: Discord.StreamDispatcher;
+    loop: boolean;
   };
 } = {};
 
@@ -67,7 +68,7 @@ client.on('message', message => {
     message.member &&
     !servers[message.member.guild.id]
   ) {
-    servers[message.member.guild.id] = {queue: []};
+    servers[message.member.guild.id] = {queue: [], loop: false};
   }
 
   if (

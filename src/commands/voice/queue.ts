@@ -14,11 +14,13 @@ module.exports = {
     if (server.queue.length === 0) {
       message.reply('the queue is empty!');
     } else {
+      const playingStatus = server.loop ? 'looping' : 'playing';
+
       const queueEmbed = new MessageEmbed()
         .setTitle('Server Queue')
         .setAuthor(message.guild?.name)
-        .setColor('#30ff7c')
-        .addField('Currently playing', server.queue[0].title);
+        .setColor('#ad3e91')
+        .addField(`Currently ${playingStatus}`, server.queue[0].title);
 
       for (let i = 1; i < server.queue.length; i++) {
         queueEmbed.addField(i, server.queue[i].title);

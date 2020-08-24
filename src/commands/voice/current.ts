@@ -16,6 +16,7 @@ module.exports = {
     } else {
       const isPaused =
         server.dispatcher!.paused === true ? 'Paused' : 'Playing';
+      const isLooped = server.loop ? 'Yes' : 'No';
       const timeRemaining = Math.trunc(
         server.queue[0].length - server.dispatcher!.streamTime / 1000
       );
@@ -31,6 +32,7 @@ module.exports = {
         .setURL(server.queue[0].url)
         .setThumbnail(server.queue[0].thumbnailURL)
         .addField('Status', isPaused, true)
+        .addField('Loop', isLooped, true)
         .setColor('#ad3e91')
         .addField('Time Remaining', minutes + ':' + seconds, true);
 
