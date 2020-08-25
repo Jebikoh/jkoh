@@ -23,3 +23,4 @@ My personal discord bot, but mostly DJ
  - Skip
  - Move
  - Swap
+ - Loop
