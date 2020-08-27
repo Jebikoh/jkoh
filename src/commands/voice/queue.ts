@@ -20,10 +20,16 @@ module.exports = {
         .setTitle('Server Queue')
         .setAuthor(message.guild?.name)
         .setColor('#ad3e91')
-        .addField(`Currently ${playingStatus}`, server.queue[0].title);
+        .addField(`Currently ${playingStatus}`, `\`${server.queue[0].title}\``);
+
+      const guildIcon = message.guild!.iconURL({format: 'png', size: 512});
+      if (guildIcon !== null) {
+        queueEmbed.setThumbnail(guildIcon);
+      }
 
       for (let i = 1; i < server.queue.length; i++) {
-        queueEmbed.addField(i, server.queue[i].title);
+        // Using unicode character U2800 - Braille Pattern Blank
+        queueEmbed.addField('⠀', `**${i}:** \`${server.queue[i].title}\``);
       }
 
       message.channel.send(queueEmbed);

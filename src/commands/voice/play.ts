@@ -13,6 +13,11 @@ async function play(connection: VoiceConnection, guild: Guild) {
 
   server.dispatcher.on('finish', () => {
     if (!server.loop) {
+      if (server.history.length === 10) {
+        server.history.splice(9, 1, server.queue[0]);
+      } else {
+        server.history.push(server.queue[0]);
+      }
       server.queue.shift();
     }
     if (server.queue.length > 0) {
@@ -20,6 +25,7 @@ async function play(connection: VoiceConnection, guild: Guild) {
     } else {
       connection.disconnect();
       server.dispatcher = undefined;
+      server.history = [];
     }
   });
 }

@@ -12,7 +12,7 @@ module.exports = {
   execute(message: Message) {
     const server = servers[message.guild!.id];
     if (typeof server.dispatcher === 'undefined') {
-      message.reply("There's nothing playing!");
+      message.reply("there's nothing playing!");
     } else {
       message.channel.send(
         `Pausing :pause_button: : \`${server.queue[0].title}\``

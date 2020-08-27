@@ -1,16 +1,13 @@
 import * as Discord from 'discord.js';
 // eslint-disable-next-line node/no-unpublished-import
 import {prefix, token, deleteTimer} from '../config.json';
-import {deleteMessage} from './utils';
+import {deleteMessage, serverStopAudio} from './utils';
 import Command from './Command';
 import SkeletronClient from './SkeletronClient';
+import Server from './Server';
 
 export const servers: {
-  [guildId: string]: {
-    queue: {url: string; title: string; thumbnailURL: string; length: number}[];
-    dispatcher?: Discord.StreamDispatcher;
-    loop: boolean;
-  };
+  [guildId: string]: Server;
 } = {};
 
 const client = new SkeletronClient({});
@@ -22,6 +19,14 @@ const cooldowns: Discord.Collection<
 
 client.on('ready', () => {
   console.log('Client is ready!');
+});
+
+client.on('voiceStateUpdate', (oldMember, newMember) => {
+  const newUserChannel = newMember.channel;
+  const oldUserChannel = oldMember.channel;
+  if (newUserChannel === null && oldUserChannel !== null) {
+    serverStopAudio(servers[oldMember.guild.id], oldUserChannel);
+  }
 });
 
 client.on('message', message => {
@@ -68,7 +73,7 @@ client.on('message', message => {
     message.member &&
     !servers[message.member.guild.id]
   ) {
-    servers[message.member.guild.id] = {queue: [], loop: false};
+    servers[message.member.guild.id] = {queue: [], history: [], loop: false};
   }
 
   if (

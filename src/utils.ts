@@ -1,4 +1,6 @@
-import {Message} from 'discord.js';
+import {Message, VoiceChannel} from 'discord.js';
+import Server from './Server';
+// eslint-disable-next-line node/no-unpublished-import
 import {deleteTimer} from '../config.json';
 
 export function deleteMessage(
@@ -30,4 +32,12 @@ export function isValidUrl(str: string) {
     'i'
   ); // fragment locator
   return !!pattern.test(str);
+}
+
+export function serverStopAudio(server: Server, channel: VoiceChannel) {
+  channel.leave();
+  server.dispatcher = undefined;
+  server.loop = false;
+  server.queue = [];
+  server.history = [];
 }

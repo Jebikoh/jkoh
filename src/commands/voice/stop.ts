@@ -1,5 +1,6 @@
 import {Message} from 'discord.js';
 import {servers} from '../..';
+import {serverStopAudio} from '../../utils';
 
 module.exports = {
   name: 'stop',
@@ -19,9 +20,7 @@ module.exports = {
       if (channel === null) {
         message.reply("you aren't in a voice channel!");
       } else {
-        channel.leave();
-        server.dispatcher = undefined;
-        server.loop = false;
+        serverStopAudio(server, channel);
         message.channel.send('Stopped! :no_entry:');
       }
     }
