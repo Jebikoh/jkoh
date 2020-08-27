@@ -17,10 +17,12 @@ My personal discord bot, but mostly DJ
  - Current
  - Pause
  - Queue
+ - History
  - Resume
  - Restart
  - Remove
  - Skip
+ - Previous
  - Move
  - Swap
  - Loop
